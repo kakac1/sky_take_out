@@ -93,12 +93,14 @@ public class DishServicelmpl implements DishService {
 
         }
 
-        for (Long id : ids) {
+        /*for (Long id : ids) {
             dishMapper.deleteById(id);
             dishFlavorMapper.deleteById(id);
         }
+*/
 
-
+        dishMapper.deleteByIds(ids);
+        dishFlavorMapper.deleteByIds(ids);
 
 
     }
