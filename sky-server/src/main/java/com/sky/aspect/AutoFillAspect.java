@@ -27,7 +27,6 @@ public class AutoFillAspect {
     /**
      * 切入点
      */
-
     @Pointcut("execution(* com.sky.mapper..*.*(..)) && @annotation(com.sky.annotation.AutoFill)")
     public void autofillPointCut(){}
 
@@ -37,8 +36,8 @@ public class AutoFillAspect {
     @Before("autofillPointCut()")
     public void autoFill(JoinPoint joinPoint){
         log.info("开始进行公共字段的填充...");
-        MethodSignature signature = (MethodSignature)joinPoint.getSignature();
-        AutoFill autoFill = signature.getMethod().getAnnotation(AutoFill.class);
+        MethodSignature signature = (MethodSignature)joinPoint.getSignature();//方法签名对象
+        AutoFill autoFill = signature.getMethod().getAnnotation(AutoFill.class);//获取方法上的注解对象
         OperationType operationType = autoFill.value();//获取数据库操作类型
 
         Object[] args = joinPoint.getArgs();
@@ -47,7 +46,6 @@ public class AutoFillAspect {
         }
 
         Object entity = args[0];
-
         LocalDateTime now=LocalDateTime.now();
         Long currentId= BaseContext.getCurrentId();
 
