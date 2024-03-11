@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.SetmealMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+insert into setmeal (category_id, name, price, description, image, create_time, update_time, create_user, update_user,status)
+VALUES
+(#{categoryId},#{name},#{price},#{description},#{image},#{createTime},#{updateTime},#{createUser},#{updateUser},#{status})
+    </insert>
+    <insert id="insertBatch">
+        insert into setmeal_dish (setmeal_id, dish_id, name, price, copies) VALUES
+        <foreach collection="setmealDishes"  item="df" separator=",">
+            (#{df.setmealId},#{df.dishId},#{df.name},#{df.price},#{df.copies})
+        </foreach>
+    </insert>
+    <update id="update">
+update setmeal
+<set>
+    <if test="categoryId !=null">
+        category_id=#{categoryId},
+    </if>
+    <if test="name!=null">
+        name=#{name},
+    </if>
+    <if test="price!=null">
+        price=#{price},
+    </if>
+    <if test="status!=null">
+        status=#{status},
+    </if>
+    <if test="description!=null">
+        description=#{description},
+    </if>
+    <if test="image!=null">
+        image=#{image},
+    </if>
+    <if test="updateTime!=null">
+        update_time=#{updateTime},
+</if>
+    <if test="updateUser!=null">
+        update_user=#{updateUser}
+    </if>
+</set>
+        where id=#{id}
+
+
+    </update>
+    <delete id="deleteByIds">
+        delete from setmeal where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="pageQuery" resultType="com.sky.vo.SetmealVO">
+    select * from setmeal as s
+    <where>
+        <if test="categoryId != null">
+            and s.category_id=#{categoryId}
+        </if>
+        <if test="name !=null">
+            and d.name like concat('%',#{name},'%')
+        </if>
+        <if test="status !=null">
+            and s.status=#{status}
+        </if>
+    </where>
+    order by s.create_time desc
+
+
+
+
+    </select>
+</mapper>

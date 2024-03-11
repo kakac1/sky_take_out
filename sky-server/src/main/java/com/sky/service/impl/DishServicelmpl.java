@@ -44,8 +44,8 @@ public class DishServicelmpl implements DishService {
     public void saveWithFlavor(DishDTO dishDTO) {
         Dish dish=new Dish();
         BeanUtils.copyProperties(dishDTO,dish);
-
         dishMapper.insert(dish);
+
         Long dishId = dish.getId();
 
         List<DishFlavor> flavors = dishDTO.getFlavors();
@@ -73,6 +73,7 @@ public class DishServicelmpl implements DishService {
         return new PageResult(page.getTotal(),page.getResult());
     }
 
+
     /**
      * 菜品批量删除
      * @param ids
@@ -87,7 +88,6 @@ public class DishServicelmpl implements DishService {
             }
         }
         List<Long> setmealId=   setmealDishMapper.getSetmealIdsByDishIds(ids);
-
         if(setmealId !=null && setmealId.size()>0){
             throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
 
@@ -104,4 +104,52 @@ public class DishServicelmpl implements DishService {
 
 
     }
+
+    /**
+     * 根据id查询菜品和口味
+     * @param id
+     * @return
+     */
+    public DishVO getByIdWithFlovar(Long id) {
+        Dish dish = dishMapper.getById(id);
+        List<DishFlavor> dishFlavors=dishFlavorMapper.getByDishId(id);
+        DishVO dishVO=new DishVO();
+        BeanUtils.copyProperties(dish,dishVO);
+        dishVO.setFlavors(dishFlavors);
+        return dishVO;
+    }
+
+    /**
+     * 根据id修改菜品和口味
+     * @param dishDTO
+     */
+
+    @Transactional
+    public void updateWithFlovar(DishDTO dishDTO) {
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO,dish);
+        dishMapper.update(dish);
+
+        dishFlavorMapper.deleteById(dishDTO.getId());
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+
+        if (flavors !=null &&flavors.size()>0){
+            flavors.forEach(dishFlavor ->
+                    dishFlavor.setDishId(dishDTO.getId()));
+            dishFlavorMapper.insertBatch(flavors);
+
+        }
+    }
+
+    /**
+     * 根据菜品id查询菜品
+     * @param categoryId
+     * @return
+     */
+    public List<Dish> getByCategoryId(String categoryId) {
+        List<Dish> dishs = dishMapper.getByCategoryId(categoryId);
+        return dishs;
+    }
+
+
 }
