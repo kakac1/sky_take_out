@@ -11,3 +11,7 @@ sky:
     access-key-id: LTAI5tSkxZFAqmi1WdeczGV6
     access-key-secret: QFKYKykyaGn8Y83aEVIEzniRwcQkRW
     bucket-name: cctong
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
