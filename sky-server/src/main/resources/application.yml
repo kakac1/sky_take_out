@@ -16,6 +16,9 @@ spring:
     host: ${sky.redis.host}
     port: ${sky.redis.port}
     database: ${sky.redis.database}
+  wechat:
+    appid: ${sky.wechat.appid}
+    secret: ${sky.wechat.secret}
 
 mybatis:
   #mapper配置文件
@@ -41,6 +44,9 @@ sky:
     admin-ttl: 72000000000000000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+    user-secret-key: itheima
+    user-ttl: 72000000000000000
+    user-token-name: authentication
   alioss:
     endpoint: ${sky.alioss.endpoint}
     access-key-id: ${sky.alioss.access-key-id}
