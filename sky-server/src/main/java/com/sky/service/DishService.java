@@ -41,7 +41,12 @@ public interface DishService {
      */
     void updateWithFlovar(DishDTO dishDTO);
 
-
+    /**
+     * 菜品起售停售
+     * @param status
+     * @param id
+     */
+    void startOrStop(Integer status, Long id);
     /**
      * 根据菜品id查询菜品
      * @param categoryId
