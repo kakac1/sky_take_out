@@ -7,6 +7,10 @@ insert into setmeal (category_id, name, price, description, image, create_time, 
 VALUES
 (#{categoryId},#{name},#{price},#{description},#{image},#{createTime},#{updateTime},#{createUser},#{updateUser},#{status})
     </insert>
+
+
+
+
     <insert id="insertBatch">
         insert into setmeal_dish (setmeal_id, dish_id, name, price, copies) VALUES
         <foreach collection="setmealDishes"  item="df" separator=",">
@@ -54,6 +58,9 @@ VALUES
             </if>
         </where>
     </select>
+
+
+
     <update id="update" parameterType="Setmeal">
         update setmeal
         <set>
