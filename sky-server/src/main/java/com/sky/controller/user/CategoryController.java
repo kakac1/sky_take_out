@@ -15,7 +15,6 @@ import java.util.List;
 @RestController("userCategoryController")
 @RequestMapping("/user/category")
 @Api(tags = "C端-分类接口")
-@Slf4j
 public class CategoryController {
 
     @Autowired
@@ -29,7 +28,6 @@ public class CategoryController {
     @GetMapping("/list")
     @ApiOperation("查询分类")
     public Result<List<Category>> list(Integer type) {
-        log.info("分类查询");
         List<Category> list = categoryService.list(type);
         return Result.success(list);
     }
