@@ -56,7 +56,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
         map.put("status", Orders.COMPLETED);
         //营业额
-        Double turnover = orderMapper.sumByMap((HashMap) map);
+        Double turnover = orderMapper.sumByMap(map);
         turnover = turnover == null? 0.0 : turnover;
 
         //有效订单数
@@ -83,7 +83,6 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                 .newUsers(newUsers)
                 .build();
     }
-
 
     /**
      * 查询订单管理数据

@@ -72,7 +72,7 @@ public interface OrderMapper {
      * @return
      */
 
-    Double sumByMap(HashMap map);
+    Double sumByMap(Map map);
 
     Integer countByMap(Map map);
 
