@@ -31,6 +31,7 @@ public class DishController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
     /**
      * 新增菜品
      * @param dishDTO
