@@ -21,6 +21,7 @@ import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import com.sky.websocket.WebSocketServer;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -54,6 +55,8 @@ public class OrderServiceImpl implements OrderService {
     private AddressBookMapper addressBookMapper;
     @Autowired
     private WeChatPayUtil weChatPayUtil;
+    @Autowired
+    private WebSocketServer webSocketServer;
     /*@Value("${sky.shop.address}")
     private String shopAddress;
 
@@ -234,6 +237,14 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
         orderMapper.update(orders);
+        HashMap map = new HashMap();
+        map.put("type",1);
+        map.put("orderId",ordersDB.getId());
+        map.put("content","订单号:"+outTradeNo);
+        String jsonString = JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(jsonString);
+
+
     }
     /**
      * 查询订单详情
@@ -410,6 +421,26 @@ public class OrderServiceImpl implements OrderService {
 
         orderMapper.update(orders);
     }
+
+    /**
+     * 客户催单
+     * @param id
+     */
+    @Override
+    public void reminder(Long id) {
+        Orders ordersDB = orderMapper.getById(id);
+        if (ordersDB==null){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        HashMap map = new HashMap();
+        map.put("type",2);
+        map.put("orderId",id);
+        map.put("content","订单号:"+ordersDB.getNumber());
+        webSocketServer.sendToAllClient(JSON.toJSONString(map));
+
+
+    }
+
     /**
      * 检查客户的收货地址是否超出配送范围
      * @param address

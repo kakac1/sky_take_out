@@ -18,6 +18,8 @@ sky:
   wechat:
     appid: wx3d9156270de97630
     secret: 57b37581dc665d5275b03ca793dc9541
+    notifyUrl: https://5e89ee6d.r6.cpolar.top/notify/paySuccess
+    refund-notify-url: https://5e89ee6d.r6.cpolar.top/notify/redundSuccess
   baidu:
     ak: 11
   shop:
